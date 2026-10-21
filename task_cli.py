@@ -1,4 +1,6 @@
 import sys
+import tasks
+import storage
 
 USAGE = """\
 Uso: task-cli <comando> [argumentos]
@@ -14,8 +16,13 @@ Comandos:
 """
 
 
+# Agrega una tarea: task-cli add "<descripción>"
 def cmd_add(args):
-    print(f"[add] argumentos: {args}")
+    if len(args) != 1:
+        raise tasks.TaskError('Uso: task-cli add "<descripción>"')
+
+    task = tasks.add_task(args[0])
+    print(f"Tarea agregada correctamente (ID: {task['id']})")
 
 
 def cmd_update(args):
@@ -65,7 +72,13 @@ def main(argv):
         print("Escribe 'task-cli help' para ver los comandos disponibles.", file=sys.stderr)
         return 1
 
-    handler(args)
+    # Muestra los errores esperados como un mensaje limpio, sin traceback
+    try:
+        handler(args)
+    except (tasks.TaskError, storage.StorageError) as error:
+        print(f"Error: {error}", file=sys.stderr)
+        return 1
+
     return 0
 
 
