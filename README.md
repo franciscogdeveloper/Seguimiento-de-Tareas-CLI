@@ -1,4 +1,4 @@
-# TaskCLI
+# Seguimiento-de-Tareas-CLI
 
 Aplicación de línea de comandos para registrar y gestionar tu lista de tareas.
 Las tareas se guardan en un archivo `tasks.json` en el directorio actual, que se crea automáticamente si no existe.
