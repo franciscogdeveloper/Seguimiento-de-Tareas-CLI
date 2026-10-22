@@ -51,12 +51,22 @@ def cmd_delete(args):
     print(f"Tarea eliminada correctamente (ID: {task['id']})")
 
 
+# Marca una tarea en progreso
 def cmd_mark_in_progress(args):
-    print(f"[mark-in-progress] argumentos: {args}")
+    if len(args) != 1:
+        raise tasks.TaskError("Uso: task-cli mark-in-progress <id>")
+
+    task = tasks.set_status(parse_id(args[0]), "in-progress")
+    print(f"Tarea marcada como en progreso (ID: {task['id']})")
 
 
+# Marca una tarea como completada
 def cmd_mark_done(args):
-    print(f"[mark-done] argumentos: {args}")
+    if len(args) != 1:
+        raise tasks.TaskError("Uso: task-cli mark-done <id>")
+
+    task = tasks.set_status(parse_id(args[0]), "done")
+    print(f"Tarea marcada como completada (ID: {task['id']})")
 
 
 # Lista las tareas

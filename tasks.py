@@ -92,3 +92,18 @@ def delete_task(task_id):
     tasks.remove(task)
     storage.save_tasks(tasks)
     return task
+
+
+# Cambia el estado de una tarea
+def set_status(task_id, status):
+    if status not in VALID_STATUSES:
+        raise TaskError(f"Estado inválido '{status}'. Usa: {', '.join(VALID_STATUSES)}.")
+
+    tasks = storage.load_tasks()
+    task = find_task(tasks, task_id)
+
+    task["status"] = status
+    task["updatedAt"] = now()
+
+    storage.save_tasks(tasks)
+    return task
