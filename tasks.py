@@ -43,3 +43,16 @@ def add_task(description):
     tasks.append(task)
     storage.save_tasks(tasks)
     return task
+
+
+# Devuelve las tareas; si se indica un estado, solo las de ese estado
+def list_tasks(status=None):
+    if status is not None and status not in VALID_STATUSES:
+        raise TaskError(f"Estado inválido '{status}'. Usa: {', '.join(VALID_STATUSES)}.")
+
+    tasks = storage.load_tasks()
+    if status is None:
+        return tasks
+
+    # Filtra las tareas que tienen el estado pedido
+    return [task for task in tasks if task["status"] == status]

@@ -41,8 +41,22 @@ def cmd_mark_done(args):
     print(f"[mark-done] argumentos: {args}")
 
 
+# Lista las tareas
 def cmd_list(args):
-    print(f"[list] argumentos: {args}")
+    if len(args) > 1:
+        raise tasks.TaskError("Uso: task-cli list [todo|in-progress|done]")
+
+    # Sin argumento muestra todas; con argumento filtra por estado
+    status = args[0] if args else None
+    task_list = tasks.list_tasks(status)
+
+    if not task_list:
+        print("No hay tareas para mostrar.")
+        return
+
+    # Una tarea por línea, con el estado alineado en 11 caracteres
+    for task in task_list:
+        print(f"[{task['id']}] {task['status']:<11}  {task['description']}")
 
 
 def cmd_help(args):
