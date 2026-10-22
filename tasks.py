@@ -27,7 +27,7 @@ def add_task(description):
 
     tasks = storage.load_tasks()
 
-    # El id es el mayor existente + 1, así no se repite aunque se borren tareas
+    # El id es el mayor existente + 1 (o 1 si no hay tareas)
     new_id = max((task["id"] for task in tasks), default=0) + 1
 
     # Misma fecha para creación y última actualización
@@ -80,5 +80,15 @@ def update_task(task_id, description):
     task["description"] = description
     task["updatedAt"] = now()
 
+    storage.save_tasks(tasks)
+    return task
+
+
+# Elimina una tarea por id y devuelve la tarea eliminada
+def delete_task(task_id):
+    tasks = storage.load_tasks()
+    task = find_task(tasks, task_id)
+
+    tasks.remove(task)
     storage.save_tasks(tasks)
     return task

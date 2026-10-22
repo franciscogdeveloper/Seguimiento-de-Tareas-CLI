@@ -24,7 +24,7 @@ def parse_id(value):
         raise tasks.TaskError(f"El ID debe ser un número entero, no '{value}'.")
 
 
-# Agrega una tarea: task-cli add "<descripción>"
+# Agrega una tarea
 def cmd_add(args):
     if len(args) != 1:
         raise tasks.TaskError('Uso: task-cli add "<descripción>"')
@@ -33,7 +33,7 @@ def cmd_add(args):
     print(f"Tarea agregada correctamente (ID: {task['id']})")
 
 
-# Cambia la descripción: task-cli update <id> "<descripción>"
+# Cambia la descripción
 def cmd_update(args):
     if len(args) != 2:
         raise tasks.TaskError('Uso: task-cli update <id> "<descripción>"')
@@ -42,8 +42,13 @@ def cmd_update(args):
     print(f"Tarea actualizada correctamente (ID: {task['id']})")
 
 
+# Elimina una tarea
 def cmd_delete(args):
-    print(f"[delete] argumentos: {args}")
+    if len(args) != 1:
+        raise tasks.TaskError("Uso: task-cli delete <id>")
+
+    task = tasks.delete_task(parse_id(args[0]))
+    print(f"Tarea eliminada correctamente (ID: {task['id']})")
 
 
 def cmd_mark_in_progress(args):
