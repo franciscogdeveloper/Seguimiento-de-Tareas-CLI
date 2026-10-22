@@ -56,3 +56,29 @@ def list_tasks(status=None):
 
     # Filtra las tareas que tienen el estado pedido
     return [task for task in tasks if task["status"] == status]
+
+
+# Busca una tarea por id; si no existe, lanza TaskError
+def find_task(tasks, task_id):
+    # Devuelve la primera coincidencia, o None si no hay ninguna
+    task = next((task for task in tasks if task["id"] == task_id), None)
+    if task is None:
+        raise TaskError(f"No existe una tarea con ID {task_id}.")
+    return task
+
+
+# Cambia la descripción de una tarea y actualiza su fecha de modificación
+def update_task(task_id, description):
+    description = description.strip()
+    if not description:
+        raise TaskError("La descripción no puede estar vacía.")
+
+    tasks = storage.load_tasks()
+    task = find_task(tasks, task_id)
+
+    # Apunta al diccionario dentro de la lista, así que el cambio queda en tasks
+    task["description"] = description
+    task["updatedAt"] = now()
+
+    storage.save_tasks(tasks)
+    return task

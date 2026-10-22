@@ -16,6 +16,14 @@ Comandos:
 """
 
 
+# Convierte el id recibido como texto a número entero
+def parse_id(value):
+    try:
+        return int(value)
+    except ValueError:
+        raise tasks.TaskError(f"El ID debe ser un número entero, no '{value}'.")
+
+
 # Agrega una tarea: task-cli add "<descripción>"
 def cmd_add(args):
     if len(args) != 1:
@@ -25,8 +33,13 @@ def cmd_add(args):
     print(f"Tarea agregada correctamente (ID: {task['id']})")
 
 
+# Cambia la descripción: task-cli update <id> "<descripción>"
 def cmd_update(args):
-    print(f"[update] argumentos: {args}")
+    if len(args) != 2:
+        raise tasks.TaskError('Uso: task-cli update <id> "<descripción>"')
+
+    task = tasks.update_task(parse_id(args[0]), args[1])
+    print(f"Tarea actualizada correctamente (ID: {task['id']})")
 
 
 def cmd_delete(args):
