@@ -3,7 +3,7 @@ import tasks
 import storage
 
 USAGE = """\
-Uso: task-cli <comando> [argumentos]
+Uso: python task_cli.py <comando> [argumentos]
 
 Comandos:
   add "<descripción>"             Agrega una tarea nueva
@@ -27,7 +27,7 @@ def parse_id(value):
 # Agrega una tarea
 def cmd_add(args):
     if len(args) != 1:
-        raise tasks.TaskError('Uso: task-cli add "<descripción>"')
+        raise tasks.TaskError('Uso: python task_cli.py add "<descripción>"')
 
     task = tasks.add_task(args[0])
     print(f"Tarea agregada correctamente (ID: {task['id']})")
@@ -36,7 +36,7 @@ def cmd_add(args):
 # Cambia la descripción
 def cmd_update(args):
     if len(args) != 2:
-        raise tasks.TaskError('Uso: task-cli update <id> "<descripción>"')
+        raise tasks.TaskError('Uso: python task_cli.py update <id> "<descripción>"')
 
     task = tasks.update_task(parse_id(args[0]), args[1])
     print(f"Tarea actualizada correctamente (ID: {task['id']})")
@@ -45,7 +45,7 @@ def cmd_update(args):
 # Elimina una tarea
 def cmd_delete(args):
     if len(args) != 1:
-        raise tasks.TaskError("Uso: task-cli delete <id>")
+        raise tasks.TaskError("Uso: python task_cli.py delete <id>")
 
     task = tasks.delete_task(parse_id(args[0]))
     print(f"Tarea eliminada correctamente (ID: {task['id']})")
@@ -54,7 +54,7 @@ def cmd_delete(args):
 # Marca una tarea en progreso
 def cmd_mark_in_progress(args):
     if len(args) != 1:
-        raise tasks.TaskError("Uso: task-cli mark-in-progress <id>")
+        raise tasks.TaskError("Uso: python task_cli.py mark-in-progress <id>")
 
     task = tasks.set_status(parse_id(args[0]), "in-progress")
     print(f"Tarea marcada como en progreso (ID: {task['id']})")
@@ -63,7 +63,7 @@ def cmd_mark_in_progress(args):
 # Marca una tarea como completada
 def cmd_mark_done(args):
     if len(args) != 1:
-        raise tasks.TaskError("Uso: task-cli mark-done <id>")
+        raise tasks.TaskError("Uso: python task_cli.py mark-done <id>")
 
     task = tasks.set_status(parse_id(args[0]), "done")
     print(f"Tarea marcada como completada (ID: {task['id']})")
@@ -72,7 +72,7 @@ def cmd_mark_done(args):
 # Lista las tareas
 def cmd_list(args):
     if len(args) > 1:
-        raise tasks.TaskError("Uso: task-cli list [todo|in-progress|done]")
+        raise tasks.TaskError("Uso: python task_cli.py list [todo|in-progress|done]")
 
     # Sin argumento muestra todas; con argumento filtra por estado
     status = args[0] if args else None
@@ -111,7 +111,7 @@ def main(argv):
     handler = COMMANDS.get(command)
     if handler is None:
         print(f"Error: comando desconocido '{command}'.", file=sys.stderr)
-        print("Escribe 'task-cli help' para ver los comandos disponibles.", file=sys.stderr)
+        print("Escribe 'python task_cli.py help' para ver los comandos disponibles.", file=sys.stderr)
         return 1
 
     # Muestra los errores esperados como un mensaje limpio, sin traceback
